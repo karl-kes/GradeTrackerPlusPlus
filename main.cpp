@@ -7,6 +7,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <iomanip>
 
 class GradeComponent {
 private:
@@ -15,26 +16,42 @@ private:
     double total;
 
 public:
-    GradeComponent(const std::string& name, double score, double total);
+    // Constructor 
+    GradeComponent(std::string n, double s, double t) {
+        name = n;
+        score = s;
+        total = t;
+    }
+
+    // Getters
+    std::string getName() { return name; }
+    double getScore() { return score; }
+    double getTotal() { return total; }
+
+    // Setters
+    void setName(std::string newName) { name = newName; }
+    void setScore(double newScore) { score = newScore; }
+    void setTotal(double newTotal) { total = newTotal; }
 };
 
 class Course {
+private:
     std::string name;
     std::map<std::string, double> weights;
     std::map<std::string, std::vector<GradeComponent>> components;
 
-    double calculateAverage() const;
+public:
+    // Constructor
+    Course(std::string courseName, std::map<std::string, double> componentWeights) 
+    : name(courseName), weights(componentWeights) {
+        for(auto& pair : weights) {
+            components[pair.first] = std::vector<GradeComponent>();
+        }
+    }
 };
 
 class GradeBook {
-private:
     std::vector<Course> courses;
-
-public:
-    void addCourse(const Course&);
-    void removeCourse(const std::string&);
-    void saveToFile(const std::string& filename);
-    void loadFromFile(const std::string& filename);
 };
 
 int main() {
